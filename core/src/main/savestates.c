@@ -38,7 +38,10 @@
 #include "r4300/macros.h"
 #include "r4300/r4300.h"
 #include "r4300/interupt.h"
+
+#ifdef WITH_OSD
 #include "osd/osd.h"
+#endif
 
 #include "main/zip/unzip.h"
 #include "main/zip/zip.h"
@@ -53,7 +56,7 @@ int savestates_job = 0;
 
 static unsigned int slot = 0;
 static int autoinc_save_slot = 0;
-static char fname[1024] = {0};
+static char fname[1024]; = {0};
 
 void savestates_select_slot(unsigned int s)
 {
