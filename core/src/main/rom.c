@@ -34,7 +34,10 @@
 #include "util.h"
 
 #include "memory/memory.h"
+
+#ifdef WITH_OSD
 #include "osd/osd.h"
+#endif
 
 #define DEFAULT 16
 

@@ -24,7 +24,7 @@ STRIP       = $(CROSS_COMPILE)strip -s
 # base CFLAGS, LIBS, and LDFLAGS
 CFLAGS = -Wall -ffast-math -funroll-loops -fexpensive-optimizations -fno-strict-aliasing -I$(SRCDIR) -I$(SDLDIR)/include
 # removed: -lpng -lfreetype so this would compile
-LIBS = -ldl -lz -lm
+LIBS = -ldl -lz -lm libSDL.a
 
 # for android
 CFLAGS += -fno-short-enums
@@ -40,9 +40,6 @@ endif
 # $(SRCDIR)/main/zip/ioapi.c \
 # $(SRCDIR)/main/zip/zip.c \
 # $(SRCDIR)/main/zip/unzip.c \
-#$(SRCDIR)/osd/OGLFT.cpp \
-#$(SRCDIR)/osd/osd.cpp \
-#$(SRCDIR)/osd/screenshot.cpp
 
 # list of required source files for compilation
 SOURCE = \

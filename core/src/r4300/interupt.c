@@ -36,7 +36,11 @@
 #include "main/main.h"
 #include "main/savestates.h"
 #include "main/cheat.h"
+
+#ifdef WITH_OSD
 #include "osd/osd.h"
+#endif
+
 #include "plugin/plugin.h"
 
 #ifdef WITH_LIRC
@@ -380,7 +384,9 @@ void gen_interupt()
             // if paused, poll for input events
             if(rompause)
             {
+#ifdef WITH_OSD
                 osd_render();  // draw Paused message in case updateScreen didn't do it
+#endif
                 SDL_GL_SwapBuffers();
                 while(rompause)
                 {
