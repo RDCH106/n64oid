@@ -47,8 +47,14 @@
 
 #include "memory/memory.h"
 #include "osal/files.h"
+
+#ifdef WITH_OSD
 #include "osd/osd.h"
 #include "osd/screenshot.h"
+#else
+#define OSD_BOTTOM_LEFT 1
+#endif
+
 #include "plugin/plugin.h"
 #include "r4300/r4300.h"
 
@@ -75,9 +81,11 @@ static int   l_CurrentFrame = 0;         // frame counter
 static int   l_SpeedFactor = 100;        // percentage of nominal game speed at which emulator is running
 static int   l_FrameAdvance = 0;         // variable to check if we pause on next frame
 
+#ifdef WITH_OSD
 static osd_message_t *l_msgVol = NULL;
 static osd_message_t *l_msgFF = NULL;
 static osd_message_t *l_msgPause = NULL;
+#endif
 
 /*********************************************************************************************************
 * helper functions
@@ -106,8 +114,10 @@ void main_message(m64p_msg_level level, unsigned int osd_corner, const char *for
     va_end(ap);
 
     /* send message to on-screen-display if enabled */
+#ifdef WITH_OSD
     if (ConfigGetParamBool(g_CoreConfig, "OnScreenDisplay"))
         osd_new_message(osd_corner, buffer);
+#endif
     /* send message to front-end */
     DebugMessage(level, buffer);
 }
@@ -225,9 +235,11 @@ void main_set_fastforward(int enable)
         l_SpeedFactor = 250;
         setSpeedFactor(l_SpeedFactor);  /* call to audio plugin */
         StateChanged(M64CORE_SPEED_FACTOR, l_SpeedFactor);
+#ifdef WITH_OSD
         // set fast-forward indicator
         l_msgFF = osd_new_message(OSD_TOP_RIGHT, "Fast Forward");
         osd_message_set_static(l_msgFF);
+#endif
     }
     else if (!enable && ff_state)
     {
@@ -235,9 +247,11 @@ void main_set_fastforward(int enable)
         l_SpeedFactor = SavedSpeedFactor;
         setSpeedFactor(l_SpeedFactor);  // call to audio plugin
         StateChanged(M64CORE_SPEED_FACTOR, l_SpeedFactor);
+#ifdef WITH_OSD
         // remove message
         osd_delete_message(l_msgFF);
         l_msgFF = NULL;
+#endif
     }
 
 }
@@ -255,21 +269,27 @@ void main_toggle_pause(void)
     if (rompause)
     {
         DebugMessage(M64MSG_STATUS, "Emulation continued.");
+#ifdef WITH_OSD
         if(l_msgPause)
         {
             osd_delete_message(l_msgPause);
             l_msgPause = NULL;
         }
+#endif
         StateChanged(M64CORE_EMU_STATE, M64EMU_RUNNING);
     }
     else
     {
+#ifdef WITH_OSD
         if(l_msgPause)
             osd_delete_message(l_msgPause);
+#endif
 
         DebugMessage(M64MSG_STATUS, "Emulation paused.");
+#ifdef WITH_OSD
         l_msgPause = osd_new_message(OSD_MIDDLE_CENTER, "Paused");
         osd_message_set_static(l_msgPause);
+#endif
         StateChanged(M64CORE_EMU_STATE, M64EMU_PAUSED);
     }
 
@@ -286,6 +306,7 @@ void main_advance_one(void)
 
 void main_draw_volume_osd(void)
 {
+#ifdef WITH_OSD
     char msgString[64];
     const char *volString;
 
@@ -311,6 +332,7 @@ void main_draw_volume_osd(void)
         osd_update_message(l_msgVol, msgString);
     else
         l_msgVol = osd_new_message(OSD_MIDDLE_CENTER, msgString);
+#endif
 }
 
 /* this function could be called as a result of a keypress, joystick/button movement,
@@ -403,6 +425,7 @@ m64p_error main_core_state_query(m64p_core_param param, int *rval)
 
 void video_plugin_render_callback(void)
 {
+#ifdef WITH_OSD
     // if the flag is set to take a screenshot, then grab it now
     if (g_TakeScreenshot != 0)
     {
@@ -415,6 +438,7 @@ void video_plugin_render_callback(void)
     {
         osd_render();
     }
+#endif
 }
 
 void new_frame(void)
@@ -524,6 +548,7 @@ int main_run(void)
     romOpen_audio();
     romOpen_input();
 
+#ifdef WITH_OSD
     if (ConfigGetParamBool(g_CoreConfig, "OnScreenDisplay"))
     {
         // init on-screen display
@@ -537,6 +562,7 @@ int main_run(void)
         }
         osd_init(width, height);
     }
+#endif
 
     // setup rendering callback from video plugin to the core, for screenshots and On-Screen-Display
     setRenderingCallback(video_plugin_render_callback);
@@ -550,8 +576,10 @@ int main_run(void)
         init_debugger();
 #endif
 
+#ifdef WITH_OSD
     /* Startup message on the OSD */
     osd_new_message(OSD_MIDDLE_CENTER, "Mupen64Plus Started...");
+#endif
 
     /* call r4300 CPU core and run the game */
     r4300_reset_hard();
@@ -567,10 +595,12 @@ int main_run(void)
         destroy_debugger();
 #endif
 
+#ifdef WITH_OSD
     if (ConfigGetParamBool(g_CoreConfig, "OnScreenDisplay"))
     {
         osd_exit();
     }
+#endif
 
     romClosed_RSP();
     romClosed_input();
@@ -594,6 +624,7 @@ void main_stop(void)
     if (!g_EmulatorRunning)
         return;
 
+#ifdef WITH_OSD
     DebugMessage(M64MSG_STATUS, "Stopping emulation.");
     if(l_msgPause)
     {
@@ -605,6 +636,8 @@ void main_stop(void)
         osd_delete_message(l_msgFF);
         l_msgFF = NULL;
     }
+#endif
+
     if (rompause)
     {
         rompause = 0;
