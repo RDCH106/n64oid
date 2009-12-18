@@ -4,30 +4,33 @@ OS = ANDROID
 CPU := ARM
 ARCH_DETECTED := 32BITS
 NO_ASM := 1
-TARGET = libmupen64plus.so.2.0.0
-SONAME = libmupen64plus.so.2
+TARGET = libn64oidcore.so
 
 SRCDIR = src
 OBJDIR = _obj
 
-SDLDIR = ~/SDL-1.2.13-android
+SDLDIR = ../SDL
 CROSS_COMPILE = arm-eabi-
 
 CC       = agcc
 CXX      = ag++
-LD       = ag++
+LD       = $(CROSS_COMPILE)gcc
 RM       = rm
 #INSTALL  = install
 #LDCONFIG = ldconfig
 STRIP       = $(CROSS_COMPILE)strip -s
 
 # base CFLAGS, LIBS, and LDFLAGS
-CFLAGS = -Wall -ffast-math -funroll-loops -fexpensive-optimizations -fno-strict-aliasing -I$(SRCDIR) -I$(SDLDIR)/include
-# removed: -lpng -lfreetype so this would compile
-LIBS = -ldl -lz -lm libSDL.a
+#CFLAGS = -Wall -ffast-math -funroll-loops -fexpensive-optimizations -fno-strict-aliasing -I$(SRCDIR) -I$(SDLDIR)/include
+CFLAGS = -O2 -pipe -fno-short-enums -I$(SRCDIR) -I$(SDLDIR)/include
 
-# for android
-CFLAGS += -fno-short-enums
+SRC_PATH=$(ANDROID_SDK)/src
+ALIB=$(SRC_PATH)/out/target/product/generic/obj/lib
+
+GCCLIBS = $(shell $(CC) -mthumb-interwork -print-libgcc-file-name)
+LDFLAGS = -Wl,-soname,$(notdir $(TARGET)) -nostdlib -T $(SRC_PATH)/build/core/armelf.xsc -shared -Bsymbolic -L$(ALIB) --no-whole-archive -lc -lm -ldl -lz --no-undefined $(GCCLIBS) --whole-archive 
+
+LIBS = -L$(SDLDIR) -lSDL
 
 # compiler/linker flags for various compile-time options.
 # 1. macro for no assembly language
@@ -103,7 +106,7 @@ endif
 
 # generate a list of object files to build, make a temporary directory for them
 OBJECTS := $(patsubst $(SRCDIR)/%.c,   $(OBJDIR)/%.o, $(filter %.c,   $(SOURCE)))
-OBJECTS += $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(filter %.cpp, $(SOURCE)))
+#OBJECTS += $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(filter %.cpp, $(SOURCE)))
 OBJDIRS = $(dir $(OBJECTS))
 $(shell mkdir -p $(OBJDIRS))
 
@@ -114,12 +117,13 @@ clean:
 
 # build rules
 $(TARGET): $(OBJECTS)
-	$(CXX) $(LDFLAGS) $(LIBS) $(OBJECTS) -o $@
-	$(STRIP) $@
-	if [ "$(SONAME)" != "" ]; then ln -sf $@ $(SONAME); fi
+	$(LD) $(LDFLAGS) $(LIBS) $(OBJECTS) -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) -o $@ $(CFLAGS) -c $<
+#	$(STRIP) $@
+#	if [ "$(SONAME)" != "" ]; then ln -sf $@ $(SONAME); fi
+
+#$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+#	$(CXX) -o $@ $(CFLAGS) -c $<
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) -o $@ $(CFLAGS) -c $<
