@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *   Mupen64plus-ui-console - osal_preproc.h                               *
+ *   Mupen64plus-core - osal/dynamiclib_unix.c                             *
  *   Mupen64Plus homepage: http://code.google.com/p/mupen64plus/           *
  *   Copyright (C) 2009 Richard Goedeken                                   *
  *                                                                         *
@@ -19,39 +19,19 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* This header file is for OS-specific #includes and #defines
- *
- */
+#include <stdlib.h>
+#include <stdio.h>
+#include <dlfcn.h>
 
-#if !defined(OSAL_PREPROC_H)
-#define OSAL_PREPROC_H
+#include "m64p_types.h"
+#include "osal_dynamiclib.h"
 
-#if defined(WIN32)
+void * osal_dynlib_getproc(m64p_dynlib_handle LibHandle, const char *pccProcedureName)
+{
+    if (pccProcedureName == NULL)
+        return NULL;
 
-  #include <windows.h>
-  #define PATH_MAX 2048
-  #define OSAL_DEFAULT_DYNLIB_FILENAME "mupen64plus.dll"
-  #define OSAL_DIR_SEPARATOR           '\\'
-  #define OSAL_CURRENT_DIR             ".\\"
-  #define OSAL_DLL_EXTENSION           ".dll"
+    return dlsym(LibHandle, pccProcedureName);
+}
 
-#elif defined(__APPLE__)
-
-  #include <limits.h>  // for PATH_MAX
-  #define OSAL_DEFAULT_DYNLIB_FILENAME "libmupen64plus.dylib"
-  #define OSAL_DIR_SEPARATOR           '/'
-  #define OSAL_CURRENT_DIR             "./"
-  #define OSAL_DLL_EXTENSION           ".dylib"
-  
-#else  /* Linux-like UNIX */
-
-  #include <limits.h>  // for PATH_MAX
-  #define OSAL_DEFAULT_DYNLIB_FILENAME "libn64oidcore.so"
-  #define OSAL_DIR_SEPARATOR           '/'
-  #define OSAL_CURRENT_DIR             "./"
-  #define OSAL_DLL_EXTENSION           ".so"
-
-#endif
-
-#endif /* #define OSAL_PREPROC_H */
 

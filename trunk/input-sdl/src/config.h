@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *   Mupen64plus-ui-console - osal_preproc.h                               *
+ *   Mupen64plus-input-sdl - config.h                                      *
  *   Mupen64Plus homepage: http://code.google.com/p/mupen64plus/           *
  *   Copyright (C) 2009 Richard Goedeken                                   *
  *                                                                         *
@@ -19,39 +19,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* This header file is for OS-specific #includes and #defines
- *
- */
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
 
-#if !defined(OSAL_PREPROC_H)
-#define OSAL_PREPROC_H
+extern void load_configuration(void);
+extern void save_controller_config(int iCtrlIdx);
 
-#if defined(WIN32)
-
-  #include <windows.h>
-  #define PATH_MAX 2048
-  #define OSAL_DEFAULT_DYNLIB_FILENAME "mupen64plus.dll"
-  #define OSAL_DIR_SEPARATOR           '\\'
-  #define OSAL_CURRENT_DIR             ".\\"
-  #define OSAL_DLL_EXTENSION           ".dll"
-
-#elif defined(__APPLE__)
-
-  #include <limits.h>  // for PATH_MAX
-  #define OSAL_DEFAULT_DYNLIB_FILENAME "libmupen64plus.dylib"
-  #define OSAL_DIR_SEPARATOR           '/'
-  #define OSAL_CURRENT_DIR             "./"
-  #define OSAL_DLL_EXTENSION           ".dylib"
-  
-#else  /* Linux-like UNIX */
-
-  #include <limits.h>  // for PATH_MAX
-  #define OSAL_DEFAULT_DYNLIB_FILENAME "libn64oidcore.so"
-  #define OSAL_DIR_SEPARATOR           '/'
-  #define OSAL_CURRENT_DIR             "./"
-  #define OSAL_DLL_EXTENSION           ".so"
-
-#endif
-
-#endif /* #define OSAL_PREPROC_H */
+#endif /* __CONFIG_H__ */
 
