@@ -25,6 +25,11 @@
 #include <sys/time.h>
 #include <ctype.h>
 
+#if (__ANDROID__)
+/* Get rid of warning message when compiling for Android OS */
+#include <string.h>
+#endif
+
 #include "SDL_stdinc.h"
 #include "SDL_fbvideo.h"
 #include "SDL_fbelo.h"
