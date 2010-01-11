@@ -220,12 +220,12 @@ const char * osal_get_user_configpath(void)
     int rval;
     
     /* first, try the XDG_CONFIG_HOME environment variable */
-    rval = get_xdg_dir(retpath, "XDG_CONFIG_HOME", "mupen64plus/");
+    rval = get_xdg_dir(retpath, "XDG_CONFIG_HOME", "n64oid/");
     if (rval == 0)
         return retpath;
 
     /* then try the HOME environment variable */
-    rval = get_xdg_dir(retpath, "HOME", ".config/mupen64plus/");
+    rval = get_xdg_dir(retpath, "HOME", ".config/n64oid/");
     if (rval == 0)
         return retpath;
 
@@ -241,12 +241,12 @@ const char * osal_get_user_datapath(void)
     int rval;
     
     /* first, try the XDG_DATA_HOME environment variable */
-    rval = get_xdg_dir(retpath, "XDG_DATA_HOME", "mupen64plus/");
+    rval = get_xdg_dir(retpath, "XDG_DATA_HOME", "n64oid/");
     if (rval == 0)
         return retpath;
 
     /* then try the HOME environment variable */
-    rval = get_xdg_dir(retpath, "HOME", ".local/share/mupen64plus/");
+    rval = get_xdg_dir(retpath, "HOME", ".local/share/n64oid/");
     if (rval == 0)
         return retpath;
 
@@ -262,12 +262,12 @@ const char * osal_get_user_cachepath(void)
     int rval;
     
     /* first, try the XDG_CACHE_HOME environment variable */
-    rval = get_xdg_dir(retpath, "XDG_CACHE_HOME", "mupen64plus/");
+    rval = get_xdg_dir(retpath, "XDG_CACHE_HOME", "n64oid/");
     if (rval == 0)
         return retpath;
 
     /* then try the HOME environment variable */
-    rval = get_xdg_dir(retpath, "HOME", ".cache/mupen64plus/");
+    rval = get_xdg_dir(retpath, "HOME", ".cache/n64oid/");
     if (rval == 0)
         return retpath;
 

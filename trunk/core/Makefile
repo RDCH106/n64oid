@@ -4,6 +4,8 @@ OS = ANDROID
 CPU := ARM
 ARCH_DETECTED := 32BITS
 NO_ASM := 1
+# for development purposes
+DBG_CORE := 1
 TARGET = libn64oidcore.so
 
 SRCDIR = src
@@ -28,14 +30,28 @@ SRC_PATH=$(ANDROID_SDK)/src
 ALIB=$(SRC_PATH)/out/target/product/generic/obj/lib
 
 GCCLIBS = $(shell $(CC) -mthumb-interwork -print-libgcc-file-name)
-LDFLAGS = -Wl,-soname,$(notdir $(TARGET)) -nostdlib -T $(SRC_PATH)/build/core/armelf.xsc -shared -Bsymbolic -L$(ALIB) --no-whole-archive -lc -lm -ldl -lz --no-undefined $(GCCLIBS) --whole-archive 
-
 LIBS = -L$(SDLDIR) -lSDL
+LDFLAGS = -Wl,-soname,$(notdir $(TARGET)) -nostdlib -T $(SRC_PATH)/build/core/armelf.xsc -shared -Bsymbolic -L$(ALIB) -Wl,--whole-archive $(LIBS) -Wl,--no-whole-archive -lc -lm -ldl -lz --no-undefined
 
 # compiler/linker flags for various compile-time options.
 # 1. macro for no assembly language
 ifeq ($(NO_ASM), 1)
   CFLAGS += -DNO_ASM
+endif
+ifeq ($(DEBUGGER), 1)
+  CFLAGS += -DDBG
+endif
+ifeq ($(DBG_COMPARE), 1)
+  CFLAGS += -DCOMPARE_CORE
+endif
+ifeq ($(DBG_CORE), 1)
+  CFLAGS += -DCORE_DBG
+endif
+ifeq ($(DBG_COUNT), 1)
+  CFLAGS += -DCOUNT_INSTR
+endif
+ifeq ($(DBG_PROFILE), 1)
+  CFLAGS += -DPROFILE_R4300
 endif
 
 # list of required source files for compilation
@@ -115,7 +131,7 @@ clean:
 
 # build rules
 $(TARGET): $(OBJECTS)
-	$(LD) $(LDFLAGS) $(LIBS) $(OBJECTS) -o $@
+	$(LD) $(LDFLAGS) $(OBJECTS) $(GCCLIBS) -o $@
 
 #	$(STRIP) $@
 #	if [ "$(SONAME)" != "" ]; then ln -sf $@ $(SONAME); fi
