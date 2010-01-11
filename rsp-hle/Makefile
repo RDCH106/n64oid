@@ -28,7 +28,7 @@ SRC_PATH=$(ANDROID_SDK)/src
 ALIB=$(SRC_PATH)/out/target/product/generic/obj/lib
 
 GCCLIBS = $(shell $(CC) -mthumb-interwork -print-libgcc-file-name)
-LDFLAGS = -Wl,-soname,$(notdir $(TARGET)) -nostdlib -T $(SRC_PATH)/build/core/armelf.xsc -shared -Bsymbolic -L$(ALIB) --no-whole-archive -lc -lm -ldl -lz --no-undefined $(GCCLIBS) --whole-archive 
+LDFLAGS = -Wl,-soname,$(notdir $(TARGET)) -nostdlib -T $(SRC_PATH)/build/core/armelf.xsc -shared -Bsymbolic -L$(ALIB) --no-whole-archive -lc -lm -ldl -lz --no-undefined
 
 # compiler/linker flags for various compile-time options.
 # 1. macro for no assembly language
@@ -58,7 +58,7 @@ clean:
 
 # build rules
 $(TARGET): $(OBJECTS)
-	$(LD) $(LDFLAGS) $(LIBS) $(OBJECTS) -o $@
+	$(LD) $(LDFLAGS) $(LIBS) $(OBJECTS) $(GCCLIBS) -o $@
 
 #	$(STRIP) $@
 #	if [ "$(SONAME)" != "" ]; then ln -sf $@ $(SONAME); fi

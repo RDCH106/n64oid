@@ -40,6 +40,12 @@ typedef unsigned int size_t;
 typedef unsigned long uintptr_t; 
 */
 
+/* pulled from include/GLES/gl.h, used in SDL_opengl.h */
+typedef float               GLclampf;       // f
+typedef unsigned int        GLbitfield;     // ui
+// not sure if this is correct for android:
+typedef double              GLclampd;       // d
+
 /* Enable the dummy audio driver (src/audio/dummy/\*.c) */
 //#define SDL_AUDIO_DRIVER_DUMMY	1
 #define SDL_AUDIO_DRIVER_OSS	1 

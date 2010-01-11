@@ -28,9 +28,8 @@ SRC_PATH=$(ANDROID_SDK)/src
 ALIB=$(SRC_PATH)/out/target/product/generic/obj/lib
 
 GCCLIBS = $(shell $(CC) -mthumb-interwork -print-libgcc-file-name)
-LDFLAGS = -Wl,-soname,$(notdir $(TARGET)) -nostdlib -T $(SRC_PATH)/build/core/armelf.xsc -shared -Bsymbolic -L$(ALIB) --no-whole-archive -lc -lm -ldl -lz --no-undefined $(GCCLIBS) --whole-archive 
-
 LIBS = -L$(SDLDIR) -lSDL
+LDFLAGS = -Wl,-soname,$(notdir $(TARGET)) -nostdlib -T $(SRC_PATH)/build/core/armelf.xsc -shared -Bsymbolic -L$(ALIB) -Wl,--whole-archive $(LIBS) -Wl,--no-whole-archive -lc -lm -ldl -lz --no-undefined
 
 ifeq ($(PLUGINDBG), 1)
   CFLAGS += -D_DEBUG
@@ -56,7 +55,7 @@ clean:
 
 # build rules
 $(TARGET): $(OBJECTS)
-	$(LD) $(LDFLAGS) $(LIBS) $(OBJECTS) -o $@
+	$(LD) $(LDFLAGS) $(OBJECTS) $(GCCLIBS) -o $@
 
 #	$(STRIP) $@
 #	if [ "$(SONAME)" != "" ]; then ln -sf $@ $(SONAME); fi

@@ -48,7 +48,8 @@
   #include <limits.h>  // for PATH_MAX
   #define OSAL_DEFAULT_DYNLIB_FILENAME "libn64oidcore.so"
   #define OSAL_DIR_SEPARATOR           '/'
-  #define OSAL_CURRENT_DIR             "./"
+  //#define OSAL_CURRENT_DIR             "./"
+  #define OSAL_CURRENT_DIR             "/data/local/n64oid/"
   #define OSAL_DLL_EXTENSION           ".so"
 
 #endif

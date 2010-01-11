@@ -136,7 +136,7 @@ static m64p_error OpenConfigurationHandles(void)
     }
 
     /* Set default values for my Config parameters */
-    (*ConfigSetDefaultString)(l_ConfigUI, "plugins", OSAL_CURRENT_DIR, "Directory in which to search for plugins");
+    (*ConfigSetDefaultString)(l_ConfigUI, "PluginDir", OSAL_CURRENT_DIR, "Directory in which to search for plugins");
     (*ConfigSetDefaultString)(l_ConfigUI, "VideoPlugin", "video_rice" OSAL_DLL_EXTENSION, "Filename of video plugin");
     (*ConfigSetDefaultString)(l_ConfigUI, "AudioPlugin", "audio_jttl" OSAL_DLL_EXTENSION, "Filename of audio plugin");
     (*ConfigSetDefaultString)(l_ConfigUI, "InputPlugin", "libinputsdl" OSAL_DLL_EXTENSION, "Filename of input plugin");
@@ -419,6 +419,7 @@ int main(int argc, char *argv[])
 {
     int i;
 
+#ifndef __ANDROID__
     printf(" __  __                         __   _  _   ____  _             \n");  
     printf("|  \\/  |_   _ _ __   ___ _ __  / /_ | || | |  _ \\| |_   _ ___ \n");
     printf("| |\\/| | | | | '_ \\ / _ \\ '_ \\| '_ \\| || |_| |_) | | | | / __|  \n");
@@ -426,6 +427,7 @@ int main(int argc, char *argv[])
     printf("|_|  |_|\\__,_| .__/ \\___|_| |_|\\___/   |_| |_|   |_|\\__,_|___/  \n");
     printf("             |_|         http://code.google.com/p/mupen64plus/  \n");
     printf("%s Version %i.%i.%i\n\n", CONSOLE_UI_NAME, VERSION_PRINTF_SPLIT(CONSOLE_UI_VERSION));
+#endif
 
     /* bootstrap some special parameters from the command line */
     if (ParseCommandLineInitial(argc, (const char **) argv) != 0)
