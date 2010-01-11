@@ -188,7 +188,12 @@ static int FB_Available(void)
 	/* Added check for /fb/0 (devfs) */
 	/* but - use environment variable first... if it fails, still check defaults */
 	int idx = 0;
+	#if (__ANDROID__)
+	/* Added for Android OS support */
+	const char *SDL_fbdevs[4] = { NULL, "/dev/graphics/fb0", "/dev/graphics/fb/0", NULL };
+	#else
 	const char *SDL_fbdevs[4] = { NULL, "/dev/fb0", "/dev/fb/0", NULL };
+	#endif
 
 	SDL_fbdevs[0] = SDL_getenv("SDL_FBDEV");
 	if( !SDL_fbdevs[0] )
@@ -496,7 +501,12 @@ static int FB_VideoInit(_THIS, SDL_PixelFormat *vformat)
 	/* Initialize the library */
 	SDL_fbdev = SDL_getenv("SDL_FBDEV");
 	if ( SDL_fbdev == NULL ) {
+		#if (__ANDROID__)
+		/* Added for Android OS support */
+		SDL_fbdev = "/dev/graphics/fb0";
+		#else
 		SDL_fbdev = "/dev/fb0";
+		#endif
 	}
 	console_fd = open(SDL_fbdev, O_RDWR, 0);
 	if ( console_fd < 0 ) {

@@ -39,6 +39,9 @@
 #if SDL_AUDIO_DRIVER_OSS_SOUNDCARD_H
 /* This is installed on some systems */
 #include <soundcard.h>
+#elif (__ANDROID__)
+/* Added for Android OS Support */
+#include <linux/soundcard.h>
 #else
 /* This is recommended by OSS */
 #include <sys/soundcard.h>

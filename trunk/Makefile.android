@@ -1,0 +1,51 @@
+# Makefile to build the SDL library for Android OS
+
+INCLUDE = -I./include
+
+# CFLAGS for compiling against a dynamic library
+CFLAGS  = -O2 $(INCLUDE) -fno-short-enums -D__ANDROID__
+
+# CFLAGS for compiling as a static library
+#CFLAGS  = -g -O2 $(INCLUDE) -static -fno-short-enums -D__ANDROID__
+CC	= agcc
+LD	= arm-eabi-ld
+AR	= arm-eabi-ar
+RANLIB	= arm-eabi-ranlib
+
+CONFIG_H = include/SDL_config.h
+TARGET  = libSDL.a
+SOURCES = \
+	src/*.c \
+	src/audio/*.c \
+	src/audio/dsp/*.c \
+	src/audio/dma/*.c \
+	src/cdrom/*.c \
+	src/cpuinfo/*.c \
+	src/events/*.c \
+	src/file/*.c \
+	src/joystick/*.c \
+	src/stdlib/*.c \
+	src/thread/*.c \
+	src/timer/*.c \
+	src/video/*.c \
+	src/video/fbcon/*.c \
+	src/joystick/dummy/*.c \
+	src/cdrom/dummy/*.c \
+	src/thread/pthread/*.c \
+	src/timer/unix/*.c \
+	src/loadso/dlopen/*.c
+
+OBJECTS = $(shell echo $(SOURCES) | sed -e 's,\.c,\.o,g')
+
+all: $(TARGET)
+
+#$(TARGET): $(CONFIG_H) $(OBJECTS)
+$(TARGET): $(OBJECTS)
+	$(AR) crv $@ $^
+	$(RANLIB) $@
+
+$(CONFIG_H):
+	cp $(CONFIG_H).default $(CONFIG_H)
+
+clean:
+	rm -f $(TARGET) $(OBJECTS)

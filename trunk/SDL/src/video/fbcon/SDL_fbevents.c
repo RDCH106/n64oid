@@ -32,6 +32,11 @@
 #include <errno.h>
 #include <limits.h>
 
+#if (__ANDROID__)
+/* Get rid of warning message when compiling for Android OS */
+#include <string.h>
+#endif
+
 /* For parsing /proc */
 #include <dirent.h>
 #include <ctype.h>

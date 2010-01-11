@@ -656,6 +656,8 @@ DEFAULT_MMAP_THRESHOLD       default: 256K
 
 #ifdef HAVE_USR_INCLUDE_MALLOC_H
 #include "/usr/include/malloc.h"
+#elif (__ANDROID__)
+/* mallinfo already defined in Android OS include files */
 #else /* HAVE_USR_INCLUDE_MALLOC_H */
 
 struct mallinfo {
