@@ -41,6 +41,8 @@
 
 #ifdef WITH_OSD
 #include "osd/osd.h"
+#else
+#define OSD_BOTTOM_LEFT 0
 #endif
 
 #include "main/zip/unzip.h"
@@ -56,7 +58,7 @@ int savestates_job = 0;
 
 static unsigned int slot = 0;
 static int autoinc_save_slot = 0;
-static char fname[1024]; = {0};
+static char fname[1024] = {0};
 
 void savestates_select_slot(unsigned int s)
 {
