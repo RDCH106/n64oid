@@ -22,7 +22,7 @@ STRIP       = $(CROSS_COMPILE)strip -s
 
 # base CFLAGS, LIBS, and LDFLAGS
 #CFLAGS = -Wall -ffast-math -funroll-loops -fexpensive-optimizations -fno-strict-aliasing -I$(SRCDIR) -I$(SDLDIR)/include
-CFLAGS = -O2 -pipe -fno-short-enums -I$(SRCDIR) -I$(SDLDIR)/include
+CFLAGS = -O2 -pipe -fno-short-enums -I$(SRCDIR) -I$(SDLDIR)/include -I$(ANDROID_SDK)/src/development/ndk/build/platforms/android-4/common/include
 
 SRC_PATH=$(ANDROID_SDK)/src
 ALIB=$(SRC_PATH)/out/target/product/generic/obj/lib
@@ -37,12 +37,6 @@ LIBS = -L$(SDLDIR) -lSDL
 ifeq ($(NO_ASM), 1)
   CFLAGS += -DNO_ASM
 endif
-
-# the following were temporarily removed from SOURCE because they wouldn't compile without modifications:
-# $(SRCDIR)/main/savestates.c \
-# $(SRCDIR)/main/zip/ioapi.c \
-# $(SRCDIR)/main/zip/zip.c \
-# $(SRCDIR)/main/zip/unzip.c \
 
 # list of required source files for compilation
 SOURCE = \
@@ -59,7 +53,11 @@ SOURCE = \
 	$(SRCDIR)/main/md5.c \
 	$(SRCDIR)/main/rom.c \
 	$(SRCDIR)/main/ini_reader.c \
+	$(SRCDIR)/main/savestates.c \
 	$(SRCDIR)/main/adler32.c \
+	$(SRCDIR)/main/zip/ioapi.c \
+	$(SRCDIR)/main/zip/zip.c \
+	$(SRCDIR)/main/zip/unzip.c \
 	$(SRCDIR)/memory/dma.c \
 	$(SRCDIR)/memory/flashram.c \
 	$(SRCDIR)/memory/memory.c \
