@@ -34,7 +34,7 @@
 #else
 #include "pngrw.h"
 #endif
-#include <png.h>
+#include <libpng/png.h>
 
 #ifndef png_jmpbuf
 #  define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)

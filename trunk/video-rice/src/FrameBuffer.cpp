@@ -608,7 +608,8 @@ uint32 CalculateRDRAMCRC(void *pPhysicalAddress, uint32 left, uint32 top, uint32
     }
     else
     {
-        try{
+        // Assembly code is not being used with Android platform, *FIXME*
+        //try{
             dwAsmdwBytesPerLine = ((width<<size)+1)/2;
 
             pAsmStart = (uint8*)(pPhysicalAddress);
@@ -749,11 +750,11 @@ l1:             mov esi, [ecx+ebx]
            dwAsmCRC = asmCRC;
 # endif // PIC
 #endif
-        }
-        catch(...)
-        {
-            TRACE0("Exception in texture CRC calculation");
-        }
+        //}
+        //catch(...)
+        //{
+        //    TRACE0("Exception in texture CRC calculation");
+        //}
     }
     return dwAsmCRC;
 }

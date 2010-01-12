@@ -17,6 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#include <stdlib.h>
+
 #include "m64p_plugin.h"
 
 #include "ConvertImage.h"
@@ -2042,7 +2044,8 @@ bool SaveRGBBufferToFile(char *filename, unsigned char *buf, int width, int heig
         img.height = height;
         img.width = width;
         img.scan_width = pitch;
-        BMG_Error code = WritePNG(filename, img);
+        // pretend like WritePNG always fails for now for Android *FIXME*
+        BMG_Error code = errFileOpen; /* WritePNG(filename, img); */
 
         if( code == BMG_OK )
             return true;
@@ -2066,7 +2069,8 @@ bool SaveRGBABufferToPNGFile(char *filename, unsigned char *buf, int width, int 
     img.height = height;
     img.width = width;
     img.scan_width = pitch;
-    BMG_Error code = WritePNG(filename, img);
+    // pretend like WritePNG always fails for now for Android *FIXME*
+    BMG_Error code = errFileOpen; /* WritePNG(filename, img); */
 
     if( code == BMG_OK )
         return true;

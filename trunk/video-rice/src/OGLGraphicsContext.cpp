@@ -131,7 +131,7 @@ void COGLGraphicsContext::InitState(void)
     glLoadIdentity();
 
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClearDepth(1.0f);
+    glClearDepthf(1.0f);
 
     glShadeModel(GL_SMOOTH);
 
@@ -159,7 +159,7 @@ void COGLGraphicsContext::InitState(void)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     
-    glDepthRange(-1, 1);
+    glDepthRangef(-1.0f, 1.0f);
 }
 
 void COGLGraphicsContext::InitOGLExtension(void)
@@ -226,7 +226,7 @@ void COGLGraphicsContext::Clear(ClearFlag dwFlags, uint32 color, float depth)
     float b = ((color    )&0xFF)/255.0f;
     float a = ((color>>24)&0xFF)/255.0f;
     glClearColor(r, g, b, a);
-    glClearDepth(depth);
+    glClearDepthf(depth);
     glClear(flag);  //Clear color buffer and depth buffer
 }
 
@@ -306,7 +306,7 @@ void COGLGraphicsContext::UpdateFrame(bool swaponly)
      }*/
 
     glDepthMask(GL_TRUE);
-    glClearDepth(1.0);
+    glClearDepthf(1.0f);
     if( !g_curRomInfo.bForceScreenClear ) 
         glClear(GL_DEPTH_BUFFER_BIT);
     else

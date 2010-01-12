@@ -19,6 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
 
+// Remove this when problems are fixed in Android *FIXME*
+#include "fake_REMOVE.h"
+
 #include "OGLCombinerNV.h"
 #include "OGLRender.h"
 #include "OGLGraphicsContext.h"

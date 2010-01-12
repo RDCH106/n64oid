@@ -17,6 +17,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#include <stdlib.h>
+
 #include "m64p_plugin.h"
 #include "typedefs.h"
 #include "ConvertImage.h"
@@ -969,7 +971,8 @@ int GetImageInfoFromFile(char* pSrcFile, IMAGE_INFO *pSrcInfo)
     {
         struct BMGImageStruct img;
         memset(&img, 0, sizeof(BMGImageStruct));
-        BMG_Error code = ReadPNG(pSrcFile, &img);
+        // pretend like ReadPNG always fails for now for Android *FIXME*
+        BMG_Error code = errFileOpen; /*ReadPNG(pSrcFile, &img);*/
         if( code == BMG_OK )
         {
             pSrcInfo->Width = img.width;
@@ -1546,7 +1549,8 @@ bool LoadRGBBufferFromPNGFile(char *filename, unsigned char **pbuf, int &width, 
         return false;
     }
 
-    BMG_Error code = ReadPNG( filename, &img );
+    // pretend like ReadPNG always fails for now for Android *FIXME*    
+    BMG_Error code = errFileOpen; /* ReadPNG( filename, &img ); */
     if( code == BMG_OK )
     {
         *pbuf = NULL;
