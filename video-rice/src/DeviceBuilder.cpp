@@ -28,7 +28,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //========================================================================
 CDeviceBuilder* CDeviceBuilder::m_pInstance=NULL;
-SupportedDeviceType CDeviceBuilder::m_deviceType = DIRECTX_DEVICE;
+// Added the following line for Android platform
+SupportedDeviceType CDeviceBuilder::m_deviceType = OGL_DEVICE;
+//SupportedDeviceType CDeviceBuilder::m_deviceType = DIRECTX_DEVICE;
 SupportedDeviceType CDeviceBuilder::m_deviceGeneralType = DIRECTX_DEVICE;
 
 CDeviceBuilder* CDeviceBuilder::GetBuilder(void)
