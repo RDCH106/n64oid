@@ -41,8 +41,16 @@
 #include <gl.h>		/* Header File For The OpenGL Library */
 #include <glu.h>	/* Header File For The GLU Library */
 #else
-#include <GL/gl.h>	/* Header File For The OpenGL Library */
-#include <GL/glu.h>	/* Header File For The GLU Library */
+// OpenGL support for Android
+#include <GLES/egl.h>
+#define GLdouble double 
+#define GLclampd GLdouble
+#define GL_CLAMP GL_CLAMP_TO_EDGE
+#define GL_RGBA4 0x8056 /*GL_RGBA4_EX*/
+//static inline void glClearDepth(GLclampf depth) { glClearDepthf(depth); };
+//static inline void glDepthRange(GLclampf nearVal, GLclampf farVal) { glDepthRangef(nearVal, farVal); };
+//#include <GL/gl.h>	/* Header File For The OpenGL Library */
+//#include <GL/glu.h>	/* Header File For The GLU Library */
 #endif
 #ifndef NO_SDL_GLEXT
 #undef __glext_h_
@@ -419,12 +427,15 @@ extern "C" {
 #define GL_FOG_COORD_ARRAY_POINTER        GL_FOG_COORDINATE_ARRAY_POINTER
 #define GL_FOG_COORD_ARRAY                GL_FOG_COORDINATE_ARRAY
 #define GL_FOG_COORD_ARRAY_BUFFER_BINDING GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING
+// Already defined in Android includes
+/*
 #define GL_SRC0_RGB                       GL_SOURCE0_RGB
 #define GL_SRC1_RGB                       GL_SOURCE1_RGB
 #define GL_SRC2_RGB                       GL_SOURCE2_RGB
 #define GL_SRC0_ALPHA                     GL_SOURCE0_ALPHA
 #define GL_SRC1_ALPHA                     GL_SOURCE1_ALPHA
 #define GL_SRC2_ALPHA                     GL_SOURCE2_ALPHA
+*/
 #endif
 
 #ifndef GL_VERSION_2_0
@@ -3104,8 +3115,9 @@ typedef char GLchar;			/* native character */
 
 #ifndef GL_VERSION_1_5
 /* GL types for handling large vertex buffer objects */
-typedef ptrdiff_t GLintptr;
-typedef ptrdiff_t GLsizeiptr;
+// Already defined in Android includes
+//typedef ptrdiff_t GLintptr;
+//typedef ptrdiff_t GLsizeiptr;
 #endif
 
 #ifndef GL_ARB_vertex_buffer_object
