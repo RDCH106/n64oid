@@ -890,8 +890,6 @@ EXPORT void CALL ShowCFB(void)
     status.toShowCFB = true;
 }
 
-// Commented out for Android, hopefully not important
-/*
 //void ReadScreen( void **dest, int *width, int *height )
 EXPORT void CALL ReadScreen(void **dest, int *width, int *height)
 {
@@ -901,7 +899,9 @@ EXPORT void CALL ReadScreen(void **dest, int *width, int *height)
    *dest = malloc( windowSetting.uDisplayHeight * windowSetting.uDisplayWidth * 3 );
    if (*dest == 0)
      return;
-   
+
+   // Commented out for Android, hopefully not important *FIXME*   
+   /*
    GLint oldMode;
    glGetIntegerv( GL_READ_BUFFER, &oldMode );
    glReadBuffer( GL_FRONT );
@@ -909,8 +909,8 @@ EXPORT void CALL ReadScreen(void **dest, int *width, int *height)
    glReadPixels( 0, 0, windowSetting.uDisplayWidth, windowSetting.uDisplayHeight,
          GL_RGB, GL_UNSIGNED_BYTE, *dest );
    glReadBuffer( oldMode );
+   */
 }
-*/  
 
 EXPORT void CALL SetRenderingCallback(void (*callback)())
 {
