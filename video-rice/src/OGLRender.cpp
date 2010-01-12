@@ -19,6 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
 
+// Remove this when problems are fixed in Android *FIXME*
+#include "fake_REMOVE.h"
+
 #include "OGLRender.h"
 #include "OGLGraphicsContext.h"
 #include "OGLTexture.h"
@@ -104,6 +107,8 @@ void OGLRender::Initialize(void)
     glVertexPointer( 4, GL_FLOAT, sizeof(float)*5, &(g_vtxProjected5[0][0]) );
     glEnableClientState( GL_VERTEX_ARRAY );
 
+    // probably won't work for Android *FIXME*
+    /*
     if( m_bMultiTexture )
     {
         glClientActiveTextureARB( GL_TEXTURE0_ARB );
@@ -115,11 +120,14 @@ void OGLRender::Initialize(void)
         glEnableClientState( GL_TEXTURE_COORD_ARRAY );
     }
     else
+    */
     {
         glTexCoordPointer( 2, GL_FLOAT, sizeof( TLITVERTEX ), &(g_vtxBuffer[0].tcord[0].u) );
         glEnableClientState( GL_TEXTURE_COORD_ARRAY );
     }
 
+    // probably won't work for Android *FIXME*
+    /*
     if (m_bSupportFogCoordExt)
     {
         glFogCoordPointerEXT( GL_FLOAT, sizeof(float)*5, &(g_vtxProjected5[0][4]) );
@@ -132,6 +140,7 @@ void OGLRender::Initialize(void)
         glFogf( GL_FOG_START, 0.0f );
         glFogf( GL_FOG_END, 1.0f );
     }
+    */
 
     //glColorPointer( 1, GL_UNSIGNED_BYTE, sizeof(TLITVERTEX), &g_vtxBuffer[0].r);
     glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof(uint8)*4, &(g_oglVtxColors[0][0]) );
@@ -214,14 +223,14 @@ void OGLRender::ClearBuffer(bool cbuffer, bool zbuffer)
     if( cbuffer )   flag |= GL_COLOR_BUFFER_BIT;
     if( zbuffer )   flag |= GL_DEPTH_BUFFER_BIT;
     float depth = ((gRDP.originalFillColor&0xFFFF)>>2)/(float)0x3FFF;
-    glClearDepth(depth);
+    glClearDepthf(depth);
     glClear(flag);
 }
 
 void OGLRender::ClearZBuffer(float depth)
 {
     uint32 flag=GL_DEPTH_BUFFER_BIT;
-    glClearDepth(depth);
+    glClearDepthf(depth);
     glClear(flag);
 }
 
@@ -699,7 +708,7 @@ void OGLRender::RenderReset()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, windowSetting.uDisplayWidth, windowSetting.uDisplayHeight, 0, -1, 1);
+    glOrthof(0, windowSetting.uDisplayWidth, windowSetting.uDisplayHeight, 0, -1, 1);
 
     // position viewer 
     glMatrixMode(GL_MODELVIEW);
@@ -893,7 +902,7 @@ void OGLRender::glViewportWrapper(GLint x, GLint y, GLsizei width, GLsizei heigh
         mflag=flag;
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        if( flag )  glOrtho(0, windowSetting.uDisplayWidth, windowSetting.uDisplayHeight, 0, -1, 1);
+        if( flag )  glOrthof(0, windowSetting.uDisplayWidth, windowSetting.uDisplayHeight, 0, -1, 1);
         glViewport(x,y,width,height);
     }
 }

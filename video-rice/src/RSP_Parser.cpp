@@ -862,8 +862,9 @@ void DLParser_Process(OSTask * pTask)
     CRender::g_pRender->SetViewport(0, 0, windowSetting.uViWidth, windowSetting.uViHeight, 0x3FF);
     CRender::g_pRender->SetFillMode(options.bWinFrameMode? RICE_FILLMODE_WINFRAME : RICE_FILLMODE_SOLID);
 
-    try
-    {
+    // removed for Android
+    //try
+    //{
         // The main loop
         while( gDlistStackPointer >= 0 )
         {
@@ -899,12 +900,12 @@ void DLParser_Process(OSTask * pTask)
             }
         }
 
-    }
-    catch(...)
-    {
-        TRACE0("Unknown exception happens in ProcessDList");
-        TriggerDPInterrupt();
-    }
+    //}
+    //catch(...)
+    //{
+    //    TRACE0("Unknown exception happens in ProcessDList");
+    //    TriggerDPInterrupt();
+    //}
 
     CRender::g_pRender->EndRendering();
 

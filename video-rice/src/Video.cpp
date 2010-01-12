@@ -242,16 +242,17 @@ static void ProcessDListStep2(void)
         status.toShowCFB = false;
     }
 
-    try
-    {
+    // removed for Android
+    //try
+    //{
         DLParser_Process((OSTask *)(g_GraphicsInfo.DMEM + 0x0FC0));
-    }
-    catch (...)
-    {
-        TRACE0("Unknown Error in ProcessDList");
-        TriggerDPInterrupt();
-        TriggerSPInterrupt();
-    }
+    //}
+    //catch (...)
+    //{
+    //    TRACE0("Unknown Error in ProcessDList");
+    //    TriggerDPInterrupt();
+    //    TriggerSPInterrupt();
+    //}
 
     g_CritialSection.Unlock();
 }   
@@ -296,7 +297,8 @@ static void StartVideo(void)
     
     InitExternalTextures();
 
-    try {
+    // removed for Android
+    //try {
         CDeviceBuilder::GetBuilder()->CreateGraphicsContext();
         CGraphicsContext::InitWindowInfo();
 
@@ -310,12 +312,12 @@ static void StartVideo(void)
         }
         
         status.bGameIsRunning = true;
-    }
-    catch(...)
-    {
-        DebugMessage(M64MSG_ERROR, "Exception caught while starting video renderer");
-        throw 0;
-    }
+    //}
+    //catch(...)
+    //{
+    //    DebugMessage(M64MSG_ERROR, "Exception caught while starting video renderer");
+    //    throw 0;
+    //}
    
     g_CritialSection.Unlock();
 }
@@ -325,7 +327,8 @@ static void StopVideo()
     g_CritialSection.Lock();
     status.bGameIsRunning = false;
 
-    try {
+    // removed for Android
+    //try {
         CloseExternalTextures();
 
         // Kill all textures?
@@ -336,11 +339,11 @@ static void StopVideo()
         CDeviceBuilder::GetBuilder()->DeleteRender();
         CGraphicsContext::Get()->CleanUp();
         CDeviceBuilder::GetBuilder()->DeleteGraphicsContext();
-        }
-    catch(...)
-    {
-        TRACE0("Some exceptions during RomClosed");
-    }
+    //    }
+    //catch(...)
+    //{
+    //    TRACE0("Some exceptions during RomClosed");
+    //}
 
     g_CritialSection.Unlock();
     windowSetting.dps = windowSetting.fps = -1;
@@ -759,16 +762,17 @@ EXPORT BOOL CALL InitiateGFX(GFX_INFO Gfx_Info)
 
 EXPORT void CALL ProcessRDPList(void)
 {
-    try
-    {
+    // removed for Android
+    //try
+    //{
         RDP_DLParser_Process();
-    }
-    catch (...)
-    {
-        TRACE0("Unknown Error in ProcessRDPList");
-        TriggerDPInterrupt();
-        TriggerSPInterrupt();
-    }
+    //}
+    //catch (...)
+    //{
+    //    TRACE0("Unknown Error in ProcessRDPList");
+    //    TriggerDPInterrupt();
+    //    TriggerSPInterrupt();
+    //}
 }   
 
 EXPORT void CALL ProcessDList(void)
@@ -886,6 +890,8 @@ EXPORT void CALL ShowCFB(void)
     status.toShowCFB = true;
 }
 
+// Commented out for Android, hopefully not important
+/*
 //void ReadScreen( void **dest, int *width, int *height )
 EXPORT void CALL ReadScreen(void **dest, int *width, int *height)
 {
@@ -904,7 +910,7 @@ EXPORT void CALL ReadScreen(void **dest, int *width, int *height)
          GL_RGB, GL_UNSIGNED_BYTE, *dest );
    glReadBuffer( oldMode );
 }
-    
+*/  
 
 EXPORT void CALL SetRenderingCallback(void (*callback)())
 {

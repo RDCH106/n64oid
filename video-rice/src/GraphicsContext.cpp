@@ -18,6 +18,8 @@
 
 */
 
+#include <cstdlib>
+
 #include "m64p_plugin.h"
 #include "m64p_vidext.h"
 

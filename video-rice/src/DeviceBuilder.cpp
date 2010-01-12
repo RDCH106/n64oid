@@ -196,7 +196,10 @@ CRender * OGLDeviceBuilder::CreateRender(void)
         if( context.m_bSupportMultiTexture )
         {
             // OGL extension render
-            m_pRender = new COGLExtRender();
+            // commented out for Android *FIXME*
+            //m_pRender = new COGLExtRender();
+            // shouldn't get here
+            exit(-300);
         }
         else
         {
@@ -242,23 +245,35 @@ CColorCombiner * OGLDeviceBuilder::CreateColorCombiner(CRender *pRender)
 
                 if( pcontext->IsExtensionSupported("GL_ARB_fragment_program") )
                 {
-                    m_pColorCombiner = new COGL_FragmentProgramCombiner(pRender);
+                    // removed fragment combiner for Android
+                    //m_pColorCombiner = new COGL_FragmentProgramCombiner(pRender);
                     DebugMessage(M64MSG_INFO, "OpenGL Combiner: Fragment Program");
+                    // shouldn't get here
+                    exit(-1);
                 }
                 else if( pcontext->IsExtensionSupported("GL_NV_texture_env_combine4") || 
                     pcontext->IsExtensionSupported("GL_NV_register_combiners") )
                 {
-                    m_pColorCombiner = new COGLColorCombinerNvidia(pRender);
+                    // removed Nvidia combiner for Android
+                    //m_pColorCombiner = new COGLColorCombinerNvidia(pRender);
                     DebugMessage(M64MSG_INFO, "OpenGL Combiner: NVidia");
+                    // shouldn't get here
+                    exit(-1);
                 }
                 else if( pcontext->IsExtensionSupported("GL_NV_texture_env_combine4") )
                 {
-                    m_pColorCombiner = new COGLColorCombinerTNT2(pRender);
+                    // removed TNT2 combiner for Android
+                    //m_pColorCombiner = new COGLColorCombinerTNT2(pRender);
                     DebugMessage(M64MSG_INFO, "OpenGL Combiner: TNT2");
+                    // shouldn't get here
+                    exit(-1);
                 }
                 else if( pcontext->IsExtensionSupported("GL_EXT_texture_env_combine") ||
                          pcontext->IsExtensionSupported("GL_ARB_texture_env_combine") )
                 {
+                    // removed other Combiners for Android
+                    exit(-200);
+                /*
                     if( pcontext->IsExtensionSupported("GL_ARB_texture_env_crossbar") )
                     {
                         if( maxUnit > 2 )
@@ -285,6 +300,7 @@ CColorCombiner * OGLDeviceBuilder::CreateColorCombiner(CRender *pRender)
                             DebugMessage(M64MSG_INFO, "OpenGL Combiner: OGL 1.2/1.3");
                         }
                     }
+                */
                 }
                 else
                 {
@@ -300,6 +316,8 @@ CColorCombiner * OGLDeviceBuilder::CreateColorCombiner(CRender *pRender)
                     m_pColorCombiner = new COGLColorCombiner(pRender);
                     DebugMessage(M64MSG_INFO, "OpenGL Combiner: Basic OGL");
                     break;
+// removed Nvidia combiner and fragment combiner, and other combiners for Android *FIXME*
+/*
                 case OGL_1_2_DEVICE:
                 case OGL_1_3_DEVICE:
                     m_pColorCombiner = new COGLColorCombiner2(pRender);
@@ -325,6 +343,7 @@ CColorCombiner * OGLDeviceBuilder::CreateColorCombiner(CRender *pRender)
                     m_pColorCombiner = new COGL_FragmentProgramCombiner(pRender);
                     DebugMessage(M64MSG_INFO, "OpenGL Combiner: Fragment Program");
                     break;
+*/
                  default:
                         break;
                 }

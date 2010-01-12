@@ -733,8 +733,9 @@ TxtrCacheEntry * CTextureManager::GetTexture(TxtrInfo * pgti, bool fromTMEM, boo
         pEntry->pTexture->m_bScaledS = false;
     }
 
-    try 
-    {
+    // removed for Android
+    //try 
+    //{
         if (pEntry->pTexture != NULL)
         {
             TextureFmt dwType = pEntry->pTexture->GetSurfaceFormat();
@@ -810,13 +811,13 @@ TxtrCacheEntry * CTextureManager::GetTexture(TxtrInfo * pgti, bool fromTMEM, boo
             }
 #endif
         }
-    }
-    catch (...)
-    {
-        TRACE0("Exception in texture decompression");
-        g_lastTextureEntry = NULL;
-        return NULL;
-    }
+    //}
+    //catch (...)
+    //{
+    //    TRACE0("Exception in texture decompression");
+    //    g_lastTextureEntry = NULL;
+    //    return NULL;
+    //}
 
     pEntry->lastEntry = g_lastTextureEntry;
     g_lastTextureEntry = pEntry;
